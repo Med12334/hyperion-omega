@@ -1,6 +1,6 @@
 from typing import Dict, Any, List
 
-class CausalRcaDebugger {
+class CausalRcaDebugger:
     """Layer 8: Distributed Root-Cause Analysis (RCA) Causal Graph Engine."""
 
     def analyze_failure_cascade(self, error_logs: List[str]) -> Dict[str, Any]:
@@ -23,4 +23,3 @@ class CausalRcaDebugger {
             "severity": severity,
             "cascading_nodes_affected": ["compute-fabric-01", "mesh-router-02"]
         }
-}
