@@ -1,0 +1,8 @@
+[package]
+name = "hyperion-edge-sentinel"
+version = "1.0.0"
+edition = "2021"
+authors = ["Med12334 <Mohamedkhelifi41@gmail.com>"]
+description = "Layer 2 & 3: Rust Zero-Trust L7 Edge Proxy & eBPF Kernel Syscall Sentinel"
+
+[dependencies]

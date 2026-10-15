@@ -1,0 +1,65 @@
+name: Hyperion-Omega 14-Layer Polyglot CI Matrix
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  rust-edge-sentinel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Rust Cargo Test
+        working-directory: ./rust-edge-sentinel
+        run: cargo test --verbose
+
+  go-cluster-scheduler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go 1.22
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Run Go Test Suite
+        working-directory: ./go-cluster-scheduler
+        run: go test -v ./...
+
+  cpp-tensor-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile & Run C++20 Tensor Core
+        run: |
+          g++ -std=c++20 cpp-tensor-core/src/chronos_tensor_engine.cpp -o chronos_test
+          ./chronos_test
+
+  python-ai-cortex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run Pytest Suite
+        working-directory: ./python-ai-cortex
+        run: |
+          pip install -r requirements.txt
+          PYTHONPATH=. pytest -v
+
+  java-finops-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Run Maven JUnit 5 Suite
+        working-directory: ./java-finops-governance
+        run: mvn clean test package
