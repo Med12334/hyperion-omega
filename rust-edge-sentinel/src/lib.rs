@@ -1,7 +1,7 @@
 //! Hyperion-Omega Layer 2 & 3: Rust Zero-Trust Edge Proxy & eBPF Syscall Filter
 
 #[derive(Debug, Clone, PartialEq)]
-pub enumEdgeVerdict {
+pub enum EdgeVerdict {
     AllowPassThrough,
     DropRateLimited,
     QuarantineKernelEscape,
@@ -24,20 +24,20 @@ impl EdgeSentinelEngine {
         Self { max_rps_threshold }
     }
 
-    pub fn inspect_frame(&self, frame: &PacketFrame) -> enumEdgeVerdict {
+    pub fn inspect_frame(&self, frame: &PacketFrame) -> EdgeVerdict {
         let syscall = frame.syscall_hint.to_lowercase();
         if syscall.contains("ptrace_attach")
             || syscall.contains("docker.sock")
             || syscall.contains("cap_sys_admin")
         {
-            return enumEdgeVerdict::QuarantineKernelEscape;
+            return EdgeVerdict::QuarantineKernelEscape;
         }
 
         if frame.requests_per_sec > self.max_rps_threshold {
-            return enumEdgeVerdict::DropRateLimited;
+            return EdgeVerdict::DropRateLimited;
         }
 
-        enumEdgeVerdict::AllowPassThrough
+        EdgeVerdict::AllowPassThrough
     }
 }
 
@@ -56,7 +56,7 @@ mod tests {
         };
         assert_eq!(
             engine.inspect_frame(&malicious_frame),
-            enumEdgeVerdict::QuarantineKernelEscape
+            EdgeVerdict::QuarantineKernelEscape
         );
     }
 
@@ -71,7 +71,7 @@ mod tests {
         };
         assert_eq!(
             engine.inspect_frame(&flood_frame),
-            enumEdgeVerdict::DropRateLimited
+            EdgeVerdict::DropRateLimited
         );
     }
 }

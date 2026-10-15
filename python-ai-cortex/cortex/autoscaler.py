@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-class PredictiveAutoscaler {
+class PredictiveAutoscaler:
     """Layer 7: AI Reinforcement & Time-Series GPU/CPU Predictive Autoscaler."""
 
     def forecast_workload(self, current_rps: float, active_gpu_jobs: int) -> Dict[str, Any]:
@@ -15,4 +15,3 @@ class PredictiveAutoscaler {
             "recommended_gpu_allocation": required_gpus,
             "autoscaler_action": action
         }
-}
